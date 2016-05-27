@@ -1,0 +1,34 @@
+<%@page import="java.security.MessageDigest"%>
+<%!
+    public static class GravatarHelper {
+        
+        private String gravatarHash;
+
+        public GravatarHelper(HttpServletRequest request) {
+            Identity identity = (Identity)request.getAttribute("identity");
+            this.gravatarHash = "";
+            if (identity != null) {
+                try {
+                    this.gravatarHash = md5Hex(identity.getEmail());
+                }
+                catch (Exception e){}
+            }
+        }
+
+        public String getGravatarHash(){
+            return this.gravatarHash;
+        }
+
+        private static String hex(byte[] array) {
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < array.length; ++i) {
+                sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1, 3));
+            }
+            return sb.toString();
+        }
+
+        private static String md5Hex(String message) throws Exception {
+            return hex(MessageDigest.getInstance("MD5").digest(message.getBytes("CP1252")));
+        }
+    }
+%>

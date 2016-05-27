@@ -1,0 +1,105 @@
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *  Agenda
+ *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ul.main {
+    list-style: none;
+    max-width: 75%;
+    margin: 0 auto;
+  }
+
+  h3 {
+    padding: 0;
+    margin: 0;
+  }
+
+  .date {
+    width: 17%;
+    padding: 5% 1% 0 0;
+    float: left;
+    h3 {
+      font-size: 1.5em;
+    }
+    p {
+      font-size: 1em;
+    }
+  }
+
+  .events {
+    float: left;
+    width: 80%;
+    border-left: 1px solid #ccc;
+    margin-top: 5%;
+    padding-top: 3%;
+  }
+
+  .events__detail {
+    max-width: 55em;
+    li {
+      padding: 10px;
+      border-bottom: 1px dashed #ccc;
+      line-height: 22px;
+      transition: ease .4s all;
+      text-decoration: none;
+      color: #444;
+      width: 100%;
+      height: 100%;
+      &:hover {
+        background: #e9e9e9;
+        .event__time{
+          color: rgba(#444,1);
+        }
+      }
+    }
+      .fa{
+    color: rgba(#444, .85);
+  }
+  }
+
+  .event__time {
+    font-weight: 400;
+    color: rgba(#444, .5);
+  }
+  .event__name{
+    @include font-size(1.8);
+    color: #444;
+  }
+  .event__location {
+    font-size: .8em;
+    color: $kineticOrange;
+    margin-left: 8%;
+    a{
+      color: $kineticOrange;
+    }
+  }
+  .event__description{
+    margin-left: 8%;
+    display: block;
+    p{
+      color: $grayDark;
+      padding: 0;
+      margin:  0;
+          line-height: 1;
+    }
+  }
+
+  @media all and (max-width: 641px) {
+    ul.main{
+      max-width: 100%;
+    }
+    .date {
+      width: 100%;
+      border-bottom: 1px solid #ccc;
+      margin-bottom: 10px;
+    }
+    .events {
+      border: none;
+      width: 100%;
+      margin-top: 0;
+    }
+    .events__detail {
+      padding: 0;
+    }
+    li.date p {
+      margin: 0;
+    }
+  }

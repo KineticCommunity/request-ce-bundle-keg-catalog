@@ -1,0 +1,80 @@
+form .radio {
+  margin-bottom: 2em; }
+  form .radio input[type="radio"] {
+    float: none;
+    margin-left: 10px;
+    margin-right: 5px; }
+  @media screen and (max-width: 600px) {
+    form .radio label {
+      display: block; } }
+  form .radio label + label {
+    font-weight: 100; }
+  form .radio.trivia {
+    padding-left: 0; }
+    form .radio.trivia .field-label {
+      font-weight: bold;
+      display: block; }
+form button[data-button-type="save"] {
+  background: gray;
+  border: none;
+  color: #fff;
+  padding: .25em .75em;
+  margin: 1em .5em 1em 0;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.3em; }
+form button[data-button-type="submit-page"], form button[data-button-type="custom"] {
+  background: #F5A623;
+  border: none;
+  color: #333;
+  padding: .25em .75em;
+  margin: 1em .5em 1em 0;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.3em; }
+form button[disabled] {
+  cursor: not-allowed;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  opacity: .65; }
+form input[type="text"], form input[type="password"], form input[type="email"] {
+  display: block;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s; }
+form input[type='text'][disabled], form input[type="email"][disabled], form input[type='password'][disabled], form input[type='radio'][disabled], form input[type='checkbox'][disabled], form input[disabled] {
+  cursor: not-allowed; }
+form input[disabled] {
+  background-color: #eee;
+  opacity: 1; }
+form input[readonly], form input[type='text'][readonly], form input[type='search'][readonly], form input[type='url'][readonly], form input[type='tel'][readonly], form input[type='email'][readonly], form input[type='number'][readonly], form input[type='password'][readonly] {
+  background-color: #eee;
+  opacity: 1; }
+form textarea {
+  border: 1px solid #ccc;
+  outline: none;
+  display: block;
+  width: 100%; }
+  form textarea[disabled] {
+    cursor: not-allowed; }
+  form textarea[disabled], form textarea[readonly] {
+    background-color: #eee;
+    opacity: 1; }
+@media screen and (max-width: 600px) {
+  form select {
+    width: 100%; } }
+form select[disabled] {
+  cursor: not-allowed; }
+form select[disabled] {
+  background-color: #eee;
+  opacity: 1; }

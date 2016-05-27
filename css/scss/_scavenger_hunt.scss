@@ -1,0 +1,362 @@
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *  Scavenger Hunt
+ *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+$primary-text-color: $black;
+$secondary-text-color: #A1A1A4;
+$theme-color: $green;
+
+.toggler {
+  color: $gray;
+  font-size: 1.25em;
+  margin-left: 8px;
+  text-align: center;
+  cursor: pointer;
+  &.active {
+    color: $black;
+  }
+}
+
+.survey-item {
+  display: block;
+  margin-top: .5em;
+  padding: 1em;
+  border-radius: 4px;
+  width: auto;
+  background: $white;
+  box-shadow: 0 2px 1px rgba(170,170,170,0.25);
+}
+
+.survey-name {
+  font-weight: 400;
+  // Checkboxes
+  &:before{
+    font-family: 'FontAwesome';
+    font-weight: 600;
+    font-style: normal;
+    display: inline-block;
+    text-decoration: inherit;
+    padding: .2em .25em .15em 0;
+    width: (18em / 16);
+    text-align: center;
+    color: #ccc;
+    content:"\f096"
+  }
+  .completed &{
+    &:before{
+      content:"\f046";
+    }
+  }
+}
+
+.feedback-name{
+  font-weight: 400;
+}
+// List 
+.list {
+  .survey-item {
+    position: relative;
+    padding: 0;
+
+    font-size: 1em;
+    line-height: 2.857142857em;
+
+    .survey-pull-right {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+    .survey-description {
+      font-size: 0.857142857em;
+      line-height: 1.142857143em;
+      display: inline-block;
+    }
+    @media screen and (max-width: 600px) {
+      .survey-description{
+        display: none;
+      }
+      .survey-pull-right1 {
+        position: static;
+        line-height: 20px;
+        padding-bottom: 10px;
+      }
+      .survey-name{
+        display:block;
+        width: 50%;
+      }
+    }
+  }
+  .ellipsis {
+    text-overflow: ellipsis;
+
+    /* Required for text-overflow to do anything */
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .survey-description,
+  .survey-points{
+    color: $grayDark;
+  }
+
+  .survey-description,
+  .survey-points,
+  .survey-name,
+  .feedback-name {
+    margin: 0 10px;
+  }
+
+  .survey-description {
+    margin-right: 0;
+  }
+
+  .survey-points,
+  .survey-description,
+  .survey-name,
+  .feedback-name{
+    vertical-align: middle;
+  }
+}
+// Rewards
+.rewards{
+  .list-only,
+  .grid-only {
+    display: none !important;
+  }
+  li{display:none;}
+  .reward-only{
+    display:auto;
+    margin: 1em 0
+  }
+}
+
+.list {
+  .list-only {
+    display: auto;
+  }
+  .grid-only,
+  .reward-only {
+    display: none !important;
+  }
+}
+
+.grid {
+  .grid-only {
+    display: auto;
+  }
+  .list-only,
+  .reward-only {
+    display: none !important;
+  }
+}
+
+
+// Grid List
+.grid {
+  .survey-item {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    min-height: 200px;
+    width: 250px;
+    margin: 10px;
+
+    @media screen and (max-width: 600px) {
+      display: block;
+      width: auto;
+      min-height: 150px;
+      margin: 10px auto;
+    }
+  }
+
+  .survey-name,
+  .feedback-name {
+    display: block;
+    font-size: 1.142857143em;
+    line-height: 1.428571429em;
+    padding-bottom: 1.428571429em;
+  }
+  .survey-description{
+    padding-bottom: 1.428571429em;
+    color: $grayDark;
+    font-size: 1em;
+    line-height: 1.428571429em;
+  }
+
+  .survey-status {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    padding: 1em;
+    border-top: 1px solid #eee;
+    font-size: .928571429em;
+  }
+
+  .survey-status-labels {
+    position: absolute;
+    left: 10px;
+    top: 0;
+    line-height: 20px;
+    @media screen and (max-width: 200px) {
+      right: auto;
+      left: 10px;
+    }
+  }
+
+  .survey-status-label {
+    line-height: 21px;
+    font-size: 13px;
+    font-weight: 400;
+  }
+
+  .survey-points {
+    line-height: 21px;
+    font-size: 1em;
+    vertical-align: middle;
+    margin: 0 10px;
+    float:right;
+    color: $grayDark;
+  }
+}
+
+.survey-name,
+.feedback-name{
+  a{
+    &:hover,
+    &:focus{border:none;}
+  }
+}
+.survey-description{
+  font-family: 'Quattrocento', serif;
+}
+.survey-status-label {
+  vertical-align: middle;
+  margin: 0;
+  .label{
+    font-size: 100%;
+    &:hover,
+    &:focus{
+      border:none;
+    }
+  }
+}
+.survey-points{
+  font-weight: bold;
+}
+
+.grid,
+.list{
+  .completed{
+    color: $green;
+    .survey-name:before,
+    .survey-points,
+    .label.label-default{
+      color: $green;
+      cursor: default;
+      &:hover,
+      &:focus{
+        border:none;
+      }
+    }
+    .survey-name a{
+      color: $green;
+      cursor: default;
+      &:hover,
+      &:focus{
+        border:none;
+      }
+    }
+  }
+  .pending{
+    color: $orange;
+    .survey-name:before,
+    .survey-points,
+    .label.label-default{
+      color: $orange;
+      cursor: default;
+      &:hover,
+      &:focus{
+        border:none;
+      }
+    }
+    .survey-name a{
+      color: $orange;
+      cursor: default;
+      &:hover,
+      &:focus{
+        border:none;
+      }
+    }
+  }
+  .denied{
+    color: $red;
+    .survey-name:before,
+    .survey-points,
+    .label.label-default{
+      color: $red;
+      &:hover,
+      &:focus{
+        border:none;
+      }
+    }
+    .survey-name a{
+      color: $red;
+      &:hover,
+      &:focus{
+        border:none;
+      }
+    }
+  }
+  .completed,.pending,.denied{
+    .label-default{
+      background-color: transparent;
+    }
+  }
+}
+.radio.question{
+  padding-left: 0;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *  My Points
+ *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.points-item {
+  display: block;
+  margin-top: .5em;
+  border-radius: 4px;
+  width: auto;
+  background: $white;
+  box-shadow: 0 2px 1px rgba(170,170,170,0.25);
+  position: relative;
+  padding: 0;
+
+  font-size: 1em;
+  line-height: 2.857142857em;
+
+  .points-value{
+    color: $grayDark;
+  }
+  .points-pull-right {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  @media screen and (max-width: 600px) {
+    .points-name{
+      display:block;
+      width: 75%;
+    }
+  }
+  .points-name,
+  .points-value {
+    font-weight: 400;
+    margin: 0 10px;
+    vertical-align: middle;
+  }
+}
+.points-item.empty:not(:only-child) {
+  display: none;
+}

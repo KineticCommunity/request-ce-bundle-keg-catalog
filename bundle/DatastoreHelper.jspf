@@ -1,0 +1,31 @@
+<%!
+
+    public static class DatastoreHelper {
+
+        private HttpServletRequest request;
+        private BundleSubmissionComponent submissionComponent;
+        private Space space;
+
+        public DatastoreHelper(HttpServletRequest request) {
+            this.request = request;
+            this.submissionComponent = (BundleSubmissionComponent)request.getAttribute("Submissions");
+            this.space = (Space)request.getAttribute("space");
+        }
+
+        public Submission retrieveAttendeeRecord() {
+            com.kineticdata.core.authentication.Identity identity =
+                (com.kineticdata.core.authentication.Identity) request.getAttribute("identity");
+
+            java.util.Map<String,String[]> searchOptions = new java.util.HashMap<>();
+            searchOptions.put("coreState", new String[] {"Draft"});
+            searchOptions.put("values[Login Id]", new String[] {identity.getUsername()});
+
+            List<Submission> submissions = submissionComponent.searchByForm(
+                space.getKapp("helper").getForm("attendee"), searchOptions);
+            
+            return submissions.size() > 0 ? submissions.get(0) : null;
+        }
+    }
+
+%>
+

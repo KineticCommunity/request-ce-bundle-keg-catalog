@@ -1,0 +1,156 @@
+<%@page import="com.kineticdata.bundles.Json"%>
+<%@page import="com.kineticdata.bundles.Text"%>
+<%@page import="org.apache.commons.io.IOUtils"%>
+<%@page import="org.apache.http.client.HttpClient"%>
+<%@page import="org.apache.http.client.methods.HttpPost"%>
+<%@page import="org.apache.http.HttpResponse"%>
+<%@page import="org.apache.http.impl.client.HttpClientBuilder"%>
+<%@page import="org.apache.http.util.EntityUtils"%>
+<%!
+    public static class ScavengerHuntHelper {
+    
+        private HttpServletRequest request;
+        private BundleSubmissionComponent submissionComponent;
+        private Space space;
+        
+        public ScavengerHuntHelper(HttpServletRequest request) {
+            this.request = request;
+            this.submissionComponent = (BundleSubmissionComponent)request.getAttribute("Submissions");
+            this.space = (Space)request.getAttribute("space");
+        }
+
+        public boolean awardSlotMachinePoints(String user) throws Exception {
+            // Build the URL
+            StringBuilder url = new StringBuilder();
+            url.append("https://www.kdkeg.com/kinetic-task/app/api/v1/run-tree/")
+                .append("Playground").append("/") // Source
+                .append(Text.escapeUrlSegment("Keg 2016")).append("/") // Group
+                .append(Text.escapeUrlSegment("Slot Machine V1")) // Routine
+                .append("?").append(Text.escapeUrlSegment("User ID=")).append(Text.escapeUrlSegment(user)); // Routine
+            // Set request
+            HttpPost resourceRequest = new HttpPost(url.toString());
+            // Add headers
+            resourceRequest.addHeader("Accept", "application/json");
+            resourceRequest.addHeader("Content-Type", "application/x-www-form-urlencoded");
+            // Set client
+            HttpClient httpClient = HttpClientBuilder.create()
+                .build();
+            // Make request
+            HttpResponse response = httpClient.execute(resourceRequest);
+            // Throw error if response is not 200
+            if (response.getStatusLine().getStatusCode() != 200){
+                return false;
+            }
+            return true;
+        }
+        
+        public Map<String,String[]> buildSlotMachineSubmissionParams(String user) {
+            Map<String,String[]> searchOptions = new java.util.HashMap<>();
+            searchOptions.put("values[login id]", new String[] {user});
+            searchOptions.put("values[form slug]", new String[] {"slot-machine"});
+            return searchOptions;
+        }
+    
+        public Map<String,String[]> buildMyPointsSubmissionParams(String user) {
+            Map<String,String[]> searchOptions = new java.util.HashMap<>();
+            searchOptions.put("values[login id]", new String[] {user});
+            return searchOptions;
+        }
+        
+        public LinkedHashMap getEarnedPoints(){
+            LinkedHashMap results = new LinkedHashMap();
+            List<LinkedHashMap> approved = new ArrayList<>();
+            List<LinkedHashMap> pending = new ArrayList<>();
+            List<LinkedHashMap> denied = new ArrayList<>();
+            
+            com.kineticdata.core.authentication.Identity identity = (com.kineticdata.core.authentication.Identity)request.getAttribute("identity");
+
+            java.util.Map<String,String[]> auditSearchOptions = new java.util.HashMap<>();
+            auditSearchOptions.put("values[login id]", new String[] {identity.getUsername()});
+            auditSearchOptions.put("limit", new String[] {"1000"});
+            List<Submission> auditSubmissions = submissionComponent.searchByForm(space.getKapp("helper").getForm("keg-points-audit"), auditSearchOptions);
+            
+            java.util.Map<String,String[]> submissionSearchOptions = new java.util.HashMap<>();
+            submissionSearchOptions.put("q", new String[] {"createdBy=\""+identity.getUsername()+"\" OR values[Requested For]=\""+identity.getUsername()+"\""});
+            submissionSearchOptions.put("limit", new String[] {"1000"});
+            List<Submission> submissions = submissionComponent.searchByKapp(space.getKapp("catalog"), submissionSearchOptions);
+            LinkedHashMap submissionsMap = new LinkedHashMap();
+            for (Submission submission : submissions){
+                submissionsMap.put(submission.getId().toString(), submission);
+            }
+            
+            for (Submission audit : auditSubmissions){
+                Submission submission = submissionsMap.containsKey(audit.getValue("submission id")) ? (Submission)submissionsMap.remove(audit.getValue("submission id")) : null;
+                LinkedHashMap entry = new LinkedHashMap();
+                
+                if (Text.equals(audit.getValue("Status"), "Item Claimed")){
+                    entry.put("status", "Item Claimed");
+                    approved.add(entry);
+                    if (Text.isNotBlank(audit.getValue("points given"))){
+                        entry.put("points", audit.getValue("points given"));
+                    }
+                }
+                else if (Text.equals(audit.getValue("Status"), "Pending")){
+                    entry.put("status", "Pending");
+                    pending.add(entry);
+                }
+                else if (Text.equals(audit.getValue("Status"), "Item Denied")){
+                    entry.put("status", "Item Denied");
+                    denied.add(entry);
+                }
+                
+                if (submission != null && submission.getForm() != null){
+                    entry.put("name", Text.defaultIfBlank(submission.getForm().getName(), submission.getForm().getSlug()));
+                }
+                
+                entry.put("session", audit.getValue("session name"));
+                if (Text.isNotBlank(audit.getValue("display name"))){
+                    entry.put("name", audit.getValue("display name"));
+                }
+                else if (Text.isBlank((String)entry.get("name"))){
+                    entry.put("name", audit.getValue("form slug"));
+                }
+                entry.put("createdAt", audit.getCreatedAt());
+            }
+            
+            if (submissionsMap.size() > 0){
+                List<Form> scavengerForms = space.getKapp("catalog").getCategory("scavenger-hunt").getForms();
+                LinkedHashMap formMap = new LinkedHashMap();
+                for (Form form : scavengerForms){
+                    if (!Text.equals(form.getSlug(), "text-message")){
+                        formMap.put(form.getSlug(), form);
+                    }
+                }
+                
+                for (Object o : submissionsMap.values()){
+                    Submission submission = (Submission)o;
+                    if (submission.getForm() != null && formMap.containsKey(submission.getForm().getSlug())){
+                        LinkedHashMap entry = new LinkedHashMap();
+
+                        if (Text.equals(submission.getValue("Status"), "Approved")){
+                            entry.put("status", "Item Claimed");
+                            approved.add(entry);
+                            entry.put("points", "?");
+                        }
+                        else if (Text.equals(submission.getValue("Status"), "Pending Approval")){
+                            entry.put("status", "Pending");
+                            pending.add(entry);
+                        }
+                        else if (Text.equals(submission.getValue("Status"), "Denied")){
+                            entry.put("status", "Item Denied");
+                            denied.add(entry);
+                        }
+                        entry.put("name", Text.defaultIfBlank(submission.getForm().getName(), submission.getForm().getSlug()));
+                        entry.put("createdAt", submission.getCreatedAt());
+                    }
+                }
+            }
+                
+            results.put("approved", approved);
+            results.put("pending", pending);
+            results.put("denied", denied);
+            return results;
+        }
+    }
+    
+%>

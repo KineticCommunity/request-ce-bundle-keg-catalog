@@ -1,0 +1,854 @@
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * Kinetic Data KEG
+ * Date: March 28, 2016
+ * Author: Norman Orstad
+ *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+//
+@import "base";
+//
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *   Global Elements
+ *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+body {
+  background:#F4F5F7;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 300;
+  height: 100%;
+  width: 100%;
+  transition: 0s linear;
+  transition-property: background-position;
+  // transform: translate3d(0, 0, 0);
+}
+
+h2{
+  font-size: 36px;
+  line-height: 40px;
+  margin-bottom: 1em;
+}
+p{
+  margin: 0 0 20px;
+  line-height: 28px;
+}
+a {
+  @include transition(all 0.3s ease);
+  outline: none;
+  color: $linkColor;
+  text-decoration: none;
+  line-height: inherit;
+  &:hover, &:focus {
+    color: $linkColorHover;
+    // border-bottom: 1px dotted $linkColorHover;
+  }
+  &:focus {
+    outline: 5px auto $kineticOrange;
+  }
+  img {
+    -webkit-transition: opacity .25s ease;
+    transition: opacity .25s ease;
+    &:hover {
+      cursor: pointer;
+      opacity: 0.75;
+    }
+  }
+}
+
+ul {
+  list-style: none;
+  padding:0;
+  margin:0;
+}
+
+pre {
+  word-wrap: normal;
+}
+
+.pull-right{
+  float: right;
+}
+.shadow{
+  -webkit-box-shadow: inset 10px 10px 49px -29px rgba(0,0,0,0.75);
+  -moz-box-shadow: inset 10px 10px 49px -29px rgba(0,0,0,0.75);
+  box-shadow: inset 10px 10px 49px -29px rgba(0,0,0,0.75);
+}
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *   Logo
+ *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+#logo {
+  padding: 2em 0;
+  z-index: 10;
+  position: relative;
+  a {
+    display: block;
+    margin: 0 auto;
+
+    text-align: center;
+    width: 577px;
+    height: 197px;
+    outline: none;
+    background: transparent url("../images/keg-logo.png") no-repeat 0 0;
+    background-size: 577px 197px;
+    color: white;
+    text-indent: -9999px;
+    -webkit-filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.1));
+    filter:         drop-shadow(0 2px 5px rgba(0, 0, 0, 0.1)); 
+    @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+      background-image: url("../images/keg-logo@2x.png");
+      background-size: 577px 197px;
+      filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/keg-logo.png',sizingMethod='scale');
+      -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/keg-logo.png',sizingMethod='scale')";
+    }
+    @media (max-width: 767px) { 
+      background-size: 300px 102px;
+      width: 300px;
+      height: 102px;
+    }
+  }
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *   Content
+ *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+header{
+  position: fixed;
+  width: 100%;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  .nav-toggle:before{
+    color: $black;
+  }
+  a:hover{
+    border: none;
+  }
+  .logo {
+    float: left;
+    padding: 0;
+    a, span {
+      display: block;
+      width: 134px;
+      height: 50px;
+      background-repeat: no-repeat;
+      background-position: 0 50%;
+      background-image: url("../images/KD_logo_159box.png");
+      -webkit-transition: opacity 0.2s ease;
+      -moz-transition: opacity 0.2s ease;
+      -o-transition: opacity 0.2s ease;
+      transition: opacity 0.2s ease;
+      &:hover{
+        border: none;
+      }
+      @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+        background-image: url("../images/KD_logo_159box@2x.png");
+        background-size: 134px 33px;
+      }
+    }
+    img {
+      height: 0;
+    }
+  }
+  .logo a{opacity: 0;display:none;}
+  &.stuck{
+    background: rgba($white, 1);
+    box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.25);
+    .logo a{opacity: 0;display:none;}
+    .header-logo a,
+    .nav-collapse{opacity: 1;display:block;}
+    .nav-collapse ul li a{}
+  }
+}
+body.home header.stuck{
+  background-color: transparent;
+  box-shadow: none;
+  .header-logo a{opacity: 0;display:none;}
+  .logo a{opacity: 1;display:block;}
+  &.sticky{
+    background: rgba($white, 1);
+    box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.25);
+    .logo a{opacity: 0;display:none;}
+    .header-logo a,
+    .nav-collapse{opacity: 1;display:block;}
+  }
+}
+.header-logo {
+  float: left;
+  margin: 0;
+  padding: 4px 0 6px;
+}
+.avatar img{
+  border-radius: 30px;
+}
+.nav-identity{
+  float: right;
+  li.menu-item{
+    float: left;
+    > a{
+      color: $black;
+      font-size: 1.285714286em;
+      padding: .6em 0 .85em;
+      @media screen and (min-width: 40em){
+        font-size: 1.285714286em; // 18 / 14 = 1.285714286
+        padding: .6em 1em .85em;
+      }
+      text-align: center;
+      float: left;
+      margin: 0;
+    }
+  }
+  li.hunt-total{
+    padding: 0 1em;
+  > a{
+    color: $kegBlue;
+  }
+}
+  .dropdown-menu-right{
+    top:3em;
+  }
+}
+
+html.js-nav-active{
+  header.stuck{
+    background-color: rgba(255, 255, 255, .9);
+  }
+}
+.nav-collapse{
+  float:right;
+  ul{
+    float: right;
+    li{
+      width:100%;
+      float: left;
+      border-top: 1px solid $black;
+      a{
+        font-size: 1.33em;
+        color: $black;
+      }
+      &.active a{
+        color: $kineticOrange;
+      }
+      @media screen and (min-width: 40em){
+        width:auto;
+        border-top: none;
+        a{
+          color: $black;
+          font-size: 1.285714286em; // 18 / 14 = 1.285714286
+          &:hover{
+            color:$black;
+            border:none;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 40em) {
+  .nav-collapse a{
+    padding:.6em 1em .85em;
+  }
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *   Sections
+ *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+section.twitter-feed{
+  display:none;
+  @media (min-width: 960px){
+    width: 28.3333333%;
+    padding: 0;
+    float: left;
+    display:block;
+  }
+  iframe{
+    margin: 10% 5% 0 !important;
+  }
+}
+
+section{
+  @include clearfix;
+  padding:3em 0 3.571428571em; // 50/14 = 3.571428571
+  h1{
+    text-align: center;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 300;
+    font-size: 3.428571429em; // 48/14 = 3.428571429
+    z-index: 10;
+    margin-bottom: 1em;
+  }
+  h3{
+    font-family: 'Oswald', sans-serif;
+    font-weight: 300;
+    font-size: 2em; // 28/14 =2
+    color: $kineticOrange;
+  }
+  p{
+    color: $black;
+    font-family: 'Merriweather', serif;
+    font-weight: 400;
+    font-size: 1.428571429em; // 20/14 =1.428571429
+    line-height: 1.642857143em; // 23/14=1.642857143
+    strong{font-weight: 700;}
+  }
+  ul.fancy-list{
+    font-family: 'Merriweather', serif;
+    padding: 0;
+    list-style: none;
+    ul {
+      padding: 0;
+      list-style: none;
+      margin-top: 10px;
+      margin-bottom: 5px;
+    }
+    li {
+      line-height: 1.6;
+      padding: 4px 0;
+      &::before {
+        content: '';
+        display: inline-block;
+        margin-right: 12px;
+        width: 8px;
+        height: 2px;
+        background: #F5A623;
+        vertical-align: middle;
+      }
+    }
+  }
+  // Logo
+  &.hero{
+    background-image: linear-gradient( to right, #FBB040, #FFD89E);
+    position: relative;
+    z-index: 1;
+    margin: 0 0 50px 0;
+    &:before,
+    &:after {
+      background: inherit;
+      content: '';
+      display: block;
+      height: 50%;
+      left: 0;
+      position: absolute;
+      right: 0;
+      z-index: -1;
+    }
+      
+    &:after {
+      bottom: 0;
+      transform: skewY(1.5deg);
+      transform-origin: 0 100%;
+    }
+    .kd-logo{
+      font-family: 'Merriweather', serif;
+      font-weight: 100;
+    }
+    .top-angle {
+      transform: skewY(-3deg);
+      -moz-transform: skewY(-3deg);
+      -webkit-transform: skewY(-3deg);
+      background: #F4F5F7;
+      left: 0;
+      top: -50px;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      position: absolute;
+      overflow: hidden;
+      height: 100px;
+      width: 100%;
+      z-index: 1;
+    }
+  }
+  // Register Section
+  &#register{
+    background: $white;
+    overflow: hidden;
+    @media (max-width: 767px){
+      padding-top: 1em;
+    }
+  }
+  // Clock Section
+  &#pre-clock{
+    background-color:#F4F5F7;
+  }
+  //Colored footer
+  &#register-block{
+    background-color:#F5A623;
+    @extend .shadow;
+  }
+  &#whyattend{
+    background-color:#F4F5F7;
+    overflow: hidden;
+
+    @media (max-width: 767px){
+      padding-top: 1em;
+    }
+    h3{
+      color:#D95900;
+    }
+    .group{
+      position: relative;
+      ul{
+        padding-top: 100px;
+      }
+    }
+  }
+  &#wallyawards{
+    background: $white;
+    .award-winners a{
+      font-size: 1.5em;
+      color: #F5A623;
+    }
+  }
+}
+
+
+.service-items {
+  margin: 0;
+  padding: 0;
+  ul{
+    margin-bottom: 5em;
+    @include clearfix;
+  }
+  li{
+    position: relative;
+    width: 50%;
+    float: left;
+    padding: 0;
+    margin: 0;
+    @media (min-width: 768px){
+      width: 50%;
+    }
+    @media (min-width: 960px){
+      margin: 1% 5% 0 0;
+      width: 20%;
+      &:nth-child(4n){
+        margin-right: 0;
+      }
+    }
+    .service-item{
+      margin: 0;
+      padding: 0;
+      background: #FFFFFF;
+      border: 1px solid #E8E8E8;
+      text-align: center;
+      &:hover{
+        -webkit-transition: all 0.3s ease;
+        -moz-transition: all 0.3s ease;
+        -ms-transition: all 0.3s ease;
+        -o-transition: all 0.3s ease;
+        transition: all 0.3s ease;
+        box-shadow: 0px 20px 34px 0px rgba(0,0,0,0.20);
+        a{
+          color: $kineticOrange;
+        }
+      }
+      @media (min-width: 768px){
+        padding: 0;
+      }
+      position: relative;
+      clear: left;
+      background: #fff;
+      figcaption{
+        padding:1em;
+      }
+      h4{
+        margin: 0;
+      }
+      a{
+        font-size: 1.714285714em;
+        font-size: 14px;
+        color: #1E2226;
+        letter-spacing: 0.2px;
+        p{
+          font-size: 14px;
+          color: #C6C6C6;
+          letter-spacing: 0.2px;
+          margin: 0;
+        }
+        &:hover{
+          border:none;
+          color: $kineticOrange;
+        }
+      }
+    }
+  }
+}
+.parallax-window{
+  // min-height: 400px;
+  // background-color: transparent;
+}
+
+.keg-train{
+  width: 100%;
+  height: 100%;
+  position:absolute;
+  top: 0;
+  right: 0;
+  z-index:1;
+  background-image: url('../images/keg-train@2x.png');
+  background-position: -100% 50%;
+  background-repeat: no-repeat;
+  &:after{
+    bottom: 0;
+    transform: skewY(1.5deg);
+    transform-origin: 0 100%;
+  }
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+      background-image: url("../images/keg-train@2x.png");
+      background-size: 1730px 55px;
+      filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/keg-train@2x.png',sizingMethod='scale');
+      -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/keg-train@2x.png',sizingMethod='scale')";
+    }
+}
+// Form Sections
+section{
+  &#registration-intro{
+    padding: 2.142857143em 0 ;
+    background-color:#8C7A6E ;
+    #logo {
+      margin: 0;
+      padding: 0;
+      a {
+        width: 78px;
+        height: 41px;
+        background: transparent url("../images/keg16-small.png") no-repeat 0 0;
+        background-size: 78px 41px;
+        @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+          background-image: url("../images/keg16-small@2x.png");
+          background-size: 78px 41px;
+          filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/keg16-small@2x.png',sizingMethod='scale');
+          -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/keg16-small@2x.png',sizingMethod='scale')";
+        }
+      }
+    }
+  }
+
+
+  &#registration-title{
+    padding: .714285714em 0;
+    h1{
+      color:$kegBlue;
+      margin: 0;
+    }
+  }
+
+  &#registration-form{
+    h3{
+      margin-bottom: 0;
+      font-family: 'Merriweather', sans-serif;
+      font-weight: 400;
+      font-size: 1.714285714em;
+      color: #404040;
+      line-height: 2.571428571em;
+    }
+    label{
+      font-family: 'Merriweather', sans-serif;
+      font-size: 1em;
+      color: #404040;
+      line-height: 1.5em;
+      font-weight: 300;
+    }
+    input.form-control,
+    select{
+      border-radius: 4px;
+      background: #FFFFFF;
+      border: 1px solid #979797;
+    }
+    select{
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      background: url("../images/select.png") no-repeat 95% 50%;
+    }
+    .form-login{
+      background-color: $white;
+      padding: 1em;
+      margin: 3em 0;
+    }
+    .tickets{
+      margin-bottom: 1em;
+      li{
+        margin: 0;
+        padding: .5em 0;
+        border-bottom: 1px solid #979797;
+        font-size: 2em;
+        color: #404040;
+        line-height: 1;
+        small{
+          color: $kegBlue;
+        }
+      }
+    }
+    .btn-default{
+      background: #4A90E2;
+      border:none;
+      color:$white;
+      width:100%;
+      display: block;
+      @media (min-width: 768px){
+        width:auto;
+      }
+    }
+  }
+}
+
+.register-wally{
+  height: 503px;
+  left: 0;
+  margin-left: 150px;
+  position: absolute;
+  z-index: 0;
+  top: 30px;
+  width:  280px;
+  background: url("../images/wally-conductor.png") no-repeat center top;
+  @media (max-width: 768px){
+    display: none;
+  }
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+    background-image: url("../images/wally-conductor@2x.png");
+    background-size: 280px 543px;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/wally-conductor@2x.png',sizingMethod='scale');
+    -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/wally-conductor@2x.png',sizingMethod='scale')";
+  }
+}
+
+.help-block{
+  font-size: 1em;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *   Footer
+ *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+footer {
+  background-color: $black;
+  padding: 1em 0;
+  p{
+    line-height: 2.357142857em;
+    color: $white;
+    margin: 0;
+    padding:10px 15px;
+  }
+  a {
+    color: $white;
+    img{
+      margin-right: 1em;
+    }
+  }
+  .nav li{
+    float: left;
+    line-height: 2.357142857em;
+  }
+  @media (min-width: 768px){
+  }
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *   Elements
+ *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.btn{
+  display: inline-block;
+  text-align: center;
+  padding: 17px 38px 15px;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 50px;
+  background: $black;
+  color: #fff;
+  &:hover{
+    color:darken($black, 10%);
+    background-color:lighten($black, 10%);
+  }
+  &.btn-default{
+    background: $kegYellow;
+    &:hover{
+      background: darken($kegYellow, 10%);
+      color:$white;
+    }
+    @media (min-width: 768px){
+      width:auto;
+    }
+  }
+  &.btn-register{
+    position: relative;
+    background-color: $kineticOrange;
+    @media (max-width: 768px){
+      width:100%;
+      display: block;
+    }
+  }
+  &.btn-update{
+    background-color: #4c82e7;
+  }
+  &.btn-share{
+    border:4px solid lighten($kegBlue, 30%);
+    background-color: transparent;
+    color: $kegBlue;
+    padding: 0.5em 1em;
+    width: 100%;
+    border-radius: 0;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 100;
+    font-size: .91em; // 33 / 20
+    &:hover{
+      color:darken($kegBlue, 10%);
+      border-color:darken($kegBlue, 10%);
+    }
+    @media (min-width: 768px){
+      width:100%;
+    }
+  }
+}
+
+.button-group{
+  margin-top: 50px;
+  @media (max-width: 768px){
+    margin-top: 0;
+    padding-bottom: 2em;
+  }
+}
+abbr{
+  color: $red;
+}
+.caption{
+  font-size: 1em;
+  display: block;
+}
+table {
+  max-width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+  background-color: transparent;
+}
+
+// Focus colors
+input[type="file"]:focus,
+input[type="radio"]:focus,
+input[type="checkbox"]:focus {
+  outline: 5px auto $kineticOrange;
+}
+
+form{
+  margin-bottom: 20px;
+}
+input:focus {
+  outline: 0;
+  border-color: $kineticGray;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(217, 89, 0, 0.6);
+}
+
+.points-attribute{
+  font-size: 14px;
+  span{
+    line-height: 2.25em;
+    font-weight: 100;
+    font-size: .85em;
+    color:$black;
+    em{
+      color: $kineticOrange;
+      font-weight: 300;
+      font-size: 2em;
+    }
+  }
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *   Image Drop Shadow  
+ *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ .shadow{
+  box-shadow: 0px 20px 34px 0px rgba(0, 0, 0, 0.2);
+ }
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *   File Upload  
+ *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.file-table{}
+.file-header{
+  .file-row{
+    border-bottom: 1px solid #ccc;
+    span{
+      margin-right: 2em;
+      font-weight: bold;
+    }
+  }
+}
+.file-container{
+  .file-row{
+    span{
+      margin-right: 2em;
+      &.file-actions{
+        margin-right: 1em;
+      }
+    }
+  }
+}
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *  Flashes
+ *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#flashes {
+  margin: 0 11px 0 5px;
+  @include font-size(1.2);
+  .flash {
+    padding: 2px;
+    &.message {
+      background: #DFFFDF;
+      border: 2px solid #9FCF9F;
+      color: #116F11;
+    }
+    &.error {
+      background: #FFE3E3;
+      border: 2px solid #DD0000;
+      color: #661111;
+    }
+  }
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *  Sticky Footer
+ *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 100px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 100px;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *  Check Results List
+ *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ #resultList{
+  li{
+    float: left;
+    margin: 1% 5% 0 0;
+    width: 20%;
+    padding: 1em;
+    border: 1px solid #E8E8E8;
+    text-align: left;
+    position: relative;
+    background: #fff;
+    &:hover{
+      -webkit-transition: all 0.3s ease;
+      -moz-transition: all 0.3s ease;
+      -ms-transition: all 0.3s ease;
+      -o-transition: all 0.3s ease;
+      transition: all 0.3s ease;
+      box-shadow: 0px 20px 34px 0px rgba(0,0,0,0.20);
+      a{
+        color: $kineticOrange;
+      }
+    }
+    .title{
+      font-weight: bold;
+    }
+  }
+}

@@ -1,0 +1,97 @@
+section.hero div#logo {
+  position: relative;
+  a {
+    position: relative;
+    div.slot-machine-easter-egg {
+      position: absolute;
+      top: 19%;
+      right: 1%;
+      width: 4%;
+      height: 18%;
+      background: transparent;
+      cursor: pointer;
+      border-radius: 100%;
+    }
+    &.slot-machine-background {
+      background: transparent url("../images/keg-logo-slot-machine.png") no-repeat 0 0;
+      div.slot-machine {
+        position: absolute;
+        top: 5%;
+        right: 0;
+        height: 90%;
+        width: 64%;
+        &.spun::after {
+          content: attr(data-result);
+          color: black;
+        }
+        td {
+          div.wheel {
+            width: 123px !important;
+            height: 177px !important;
+            margin: 0;
+            padding: 0;
+            background-color: rgba(255, 255, 255, 0.7);
+            > div {
+              width: 100%;
+              height: 100%;
+              overflow: hidden;
+            }
+          }
+          &:first-child div.wheel {
+            border-top-left-radius: 25% 90%;
+            border-bottom-left-radius: 25% 90%;
+          }
+          div.wheel div {
+            &.first {
+              border-top-left-radius: 25% 90%;
+              border-bottom-left-radius: 25% 90%;
+              border-left: 4px solid black;
+            }
+            &.second {
+              border-top-left-radius: 15% 80%;
+              border-bottom-left-radius: 15% 80%;
+              border-left: 4px solid black;
+              border-top-right-radius: 15% 80%;
+              border-bottom-right-radius: 15% 80%;
+              border-right: 4px solid black;
+            }
+          }
+          &:last-child div.wheel {
+            border-top-right-radius: 25% 90%;
+            border-bottom-right-radius: 25% 90%;
+          }
+          div.wheel {
+            div.third {
+              border-top-right-radius: 25% 90%;
+              border-bottom-right-radius: 25% 90%;
+              border-right: 4px solid black;
+            }
+            > div img {
+              max-width: 123px;
+              display: block;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  section.hero div#logo a.slot-machine-background {
+    background-size: 300px 102px;
+    div.slot-machine td div.wheel {
+      width: 64px !important;
+      height: 92px !important;
+      div {
+        &.first, &.second, &.third {
+          border-right-width: 2px;
+          border-left-width: 2px;
+        }
+      }
+      > div img {
+        max-width: 64px;
+      }
+    }
+  }
+}
